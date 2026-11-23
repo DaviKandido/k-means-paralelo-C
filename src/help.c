@@ -9,8 +9,11 @@ void scanner_data(const char *file_name, double *dados, const int qtd_valores){
     exit(1);
   }
   int i = 0;
-  while(i< qtd_valores && !feof(fl)){
-    if(fscanf(fl, "%lf", dados +i) == 0){} //lê 1 double e guarda em dados[i]
+  while(i< qtd_valores){
+    if(fscanf(fl, "%lf", dados +i) != 1){ //lê 1 double e guarda em dados[i]
+      printf("Erro na leitura de %s: esperava %d números, mas só leu %d\n", file_name, qtd_valores, i);
+      exit(1);
+    }
     ++i;
   }
   fclose(fl);
@@ -56,8 +59,8 @@ void scanner_ideal_rotulos(const char *file_name, int *rotulos_ideais, const int
     exit(1);
   }
   int i = 0;
-  while(i< qtd_pontos && !feof(fl)){
-    if(fscanf(fl, "%d", rotulos_ideais +i) == 0){
+  while(i< qtd_pontos){
+    if(fscanf(fl, "%d", rotulos_ideais +i) != 1){
       printf("Erro na leitura da partição perfeita do arquivo %s\n", file_name);
       exit(1);
     }
@@ -77,4 +80,13 @@ double get_precision(int *rotulos_ideais, int *rotulos_kmeans, const int qtd_pon
 		}
 	}
 	return yy == 0ul && ny == 0ul ? 0.0 : (double)yy / (double)(yy + ny);
+}
+
+// Conta em quantos pontos os dois vetores de rótulos diferem (usado para comparar sequencial x OpenMP x CUDA)
+int contar_rotulos_diferentes(const int *rotulos_a, const int *rotulos_b, const int qtd_pontos){
+  int diferentes = 0, i;
+  for(i=0; i<qtd_pontos; ++i){
+    if(rotulos_a[i] != rotulos_b[i]) ++diferentes;
+  }
+  return diferentes;
 }

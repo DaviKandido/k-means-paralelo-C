@@ -18,4 +18,7 @@ void scanner_ideal_rotulos(const char *file_name, int *rotulos_ideais, const int
 // Compara o resultado do k-means com o ideal (retorna a precisão)
 double get_precision(int *rotulos_ideais, int *rotulos_kmeans, const int qtd_pontos);
 
+// Conta em quantos pontos os dois vetores de rótulos diferem
+int contar_rotulos_diferentes(const int *rotulos_a, const int *rotulos_b, const int qtd_pontos);
+
 #endif

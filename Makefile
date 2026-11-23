@@ -4,9 +4,9 @@ SRCDIR       = src
 OBJDIR       = obj
 BINDIR       = bin
 
-CFLAGS       = -Wall -std=c99 -O2 -I./$(SRCDIR)
+CFLAGS       = -Wall -std=c99 -O2 -fopenmp -I./$(SRCDIR)
 
-LDFLAGS      = -lm
+LDFLAGS      = -lm -fopenmp
 
 C_SOURCES    = $(wildcard $(SRCDIR)/*.c)
 
